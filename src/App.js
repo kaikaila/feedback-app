@@ -1,41 +1,29 @@
-function App() {
-  const title = "Blog Post";
-  const body = "This is my blog";
-  // comments是array；
-  // {}圈起来的是键值对
-  const comments = [
-    { id: 1, text: "comment one" },
-    { id: 2, text: "comment two" },
-    { id: 3, text: "comment three" },
-  ];
-  const showComments = true;
+import { useState } from "react";
+import Header from "./components/Header";
+import FeedbackList from "./components/FeedbackList";
+import FeedbackData from "./data/FeedbackData";
 
-  const commentBlock = (
-    <div className="comments">
-      <h3>Comments({comments.length})</h3>
-      <ul>
-        {comments.map((comment, index) => (
-          <li key={index}>{comment.text}</li>
-        ))}
-      </ul>
-    </div>
-  );
+function App() {
+  const [feedback, setFeedback] = useState(FeedbackData);
+
+  const deleteFeedback = (id) => {
+    if (window.confirm("Are you sure you want to delete?")) {
+      // .filter 是一个high order function
+      setFeedback(feedback.filter((item) => item.id !== id));
+    }
+  };
 
   // JSX expressions must have one parent element.
   // if we need to return multiple elements, wrap them in one parent element
   return (
-    <div className="container">
-      {/* {}是用来存放variable的 */}
-      <h1>{title}</h1>
-      <p>{body}</p>
-
-      {/* 条件判断语句的完整写法是
-      {condition ? 'yes':'no'}
-      如果之规定了condition为true时做xxx，为false时什么也不做，可以简写为
-      {showComments && 'yes'} */}
-
-      {showComments ? commentBlock : null}
-    </div>
+    <>
+      {/* 在下一句中，text就是一个prop，本质上是传入component的一个参数，text同事被赋值为‘Hello World’ */}
+      <Header bgColor="blue" textColor="yellow" />
+      <div className="container">
+        {/* {}是用来存放variable的 */}
+        <FeedbackList feedback={feedback} handleDelete={deleteFeedback} />
+      </div>
+    </>
   );
 }
 export default App;
