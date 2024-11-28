@@ -146,6 +146,10 @@ input:focus {
 }
 
 .btn {
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center;
+
   color: #fff;
   border: 0;
   border-radius: 8px;
