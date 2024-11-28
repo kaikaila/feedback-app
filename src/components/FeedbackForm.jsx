@@ -1,10 +1,15 @@
 import React from "react";
 import Card from "./shared/Card";
 import Button from "./shared/Button";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import RatingSelect from "./RatingSelect";
+import FeedbackContext from "../context/FeedbackContext";
 
 function FeedbackForm() {
+  const { addFeedback } = useContext(FeedbackContext);
+
   const [text, setText] = useState("");
+  const [rating, setRating] = useState(10);
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [message, setMessage] = useState("");
 
@@ -19,15 +24,36 @@ function FeedbackForm() {
       setMessage(null);
       setBtnDisabled(false);
     }
-    setText(e.target.text);
+    setText(e.target.value);
+    console.log("handleTextChange is working");
+  };
+
+  const handleSubmit = (e) => {
+    // default是submit to a file
+    e.preventDefault();
+    if (text.trim().length > 10) {
+      //本来这里要写text：text， rating：rating，可省略为以下
+      const newFeedback = { text, rating };
+      console.log("handleSubmit is working");
+      console.log("newFeedback");
+      addFeedback(newFeedback);
+      setText("");
+    }
   };
 
   return (
     <Card>
-      <form>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          console.log("Form submitted");
+          handleSubmit(e);
+        }}
+      >
         {" "}
         <h2>How would you rate your service with us?</h2>
         {/* to do - rating select component */}
+        <RatingSelect select={(rating) => setRating(rating)} />
         <div className="input-group">
           <input
             onChange={handleTextChange}
@@ -35,7 +61,11 @@ function FeedbackForm() {
             placeholder="Write a review"
             value={text}
           />
-          <Button type="submit" isDisabled={btnDisabled}>
+          <Button
+            type="submit"
+            isDisabled={btnDisabled}
+            onClick={() => console.log("Button clicked")}
+          >
             Send
           </Button>
         </div>

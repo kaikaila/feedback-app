@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-
+import { v4 as uuvidv4 } from "uuid";
 const FeedbackContext = createContext();
 
 export const FeedbackProvider = ({ children }) => {
@@ -47,15 +47,20 @@ export const FeedbackProvider = ({ children }) => {
   };
 
   //add更要补课
-  // const addFeedback = (newFeedBack) => {
-  //   newFeedBack.id = uuvidv4();
-  //   setFeedback([newFeedBack, ...feedback]);
-  // };
+  const addFeedback = (newFeedBack) => {
+    console.log(newFeedBack);
+    // 这是用uuid这个包给newFeedback增加一个instance variable，即id
+    newFeedBack.id = uuvidv4();
+    // 因为Feedback本身是immutable，所以只能复制一遍然后加上新加的
+    setFeedback([newFeedBack, ...feedback]);
+  };
+
   return (
     <FeedbackContext.Provider
       value={{
         feedback,
         isLoading,
+        addFeedback,
         editFeedback,
         setFeedback,
         deleteFeedback,
