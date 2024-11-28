@@ -1,24 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import FeedbackList from "./components/FeedbackList";
-import FeedbackData from "./data/FeedbackData";
+// import FeedbackData from "./data/FeedbackData";
 import FeedbackStats from "./components/FeedbackStats";
-
-import FeedbackForm from "./components/FeedbackForm";
 import { FeedbackProvider } from "./context/FeedbackContext";
+import FeedbackForm from "./components/FeedbackForm";
 import AboutPage from "./pages/AboutPage";
 
 function App() {
-  const [feedback, setFeedback] = useState(FeedbackData);
-
-  const deleteFeedback = (id) => {
-    if (window.confirm("Are you sure you want to delete?")) {
-      // .filter 是一个high order function
-      setFeedback(feedback.filter((item) => item.id !== id));
-    }
-  };
-
+  // const { FeedbackProvider } = useContext(FeedbackContext);
   // JSX expressions must have one parent element.
   // if we need to return multiple elements, wrap them in one parent element
   return (
@@ -37,11 +28,8 @@ function App() {
               element={
                 <>
                   <FeedbackForm />
-                  <FeedbackStats feedback={feedback} />
-                  <FeedbackList
-                    feedback={feedback}
-                    handleDelete={deleteFeedback}
-                  />
+                  <FeedbackStats />
+                  <FeedbackList />
                 </>
               }
             >
