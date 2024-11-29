@@ -1,13 +1,21 @@
 import React from "react";
 import Card from "./shared/Card";
 import Button from "./shared/Button";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import RatingSelect from "./RatingSelect";
 import FeedbackContext from "../context/FeedbackContext";
 
 function FeedbackForm() {
-  const { addFeedback } = useContext(FeedbackContext);
-
+  const { addFeedback, FeedbackEdit } = useContext(FeedbackContext);
+  // 如果[] 里面填了东西，[]里的东西一变，useEffect就会跑
+  // 如果[]里面是空的，那么useEffect只在加载时跑一次
+  useEffect(() => {
+    if (FeedbackEdit.edit === true) {
+      setBtnDisabled(false);
+      setText(FeedbackEdit.item.text);
+      setRating(FeedbackEdit.item.rating);
+    }
+  }, [FeedbackEdit]);
   const [text, setText] = useState("");
   const [rating, setRating] = useState(10);
   const [btnDisabled, setBtnDisabled] = useState(true);

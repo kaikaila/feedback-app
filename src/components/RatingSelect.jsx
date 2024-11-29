@@ -1,13 +1,19 @@
-import React from "react";
-import { useState } from "react";
+import React, { useContext } from "react";
+import { useState, useEffect } from "react";
+import FeedbackContext from "../context/FeedbackContext";
 
 function RatingSelect({ select }) {
+  const { FeedbackEdit } = useContext(FeedbackContext);
+  useEffect(() => {
+    setSelected(FeedbackEdit.item.rating);
+  }, [FeedbackEdit]);
   const [selected, setSelected] = useState(10);
   const handleChange = (e) => {
     //e.currentTarget.value是个string，想要变成number在前方写个+
     setSelected(+e.currentTarget.value);
     select(+e.currentTarget.value);
   };
+
   return (
     <ul className="rating">
       <li>

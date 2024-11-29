@@ -32,13 +32,14 @@ export const FeedbackProvider = ({ children }) => {
     setFeedback(data);
     setIsLoading(false);
   };
-
+  // set item to be updated
   const editFeedback = (item) => {
     setFeedbackEdit({
       item,
       edit: true,
     });
   };
+  // delete feedback
   const deleteFeedback = (id) => {
     if (window.confirm("Are you sure you want to delete?")) {
       // .filter 是一个high order function
@@ -46,7 +47,6 @@ export const FeedbackProvider = ({ children }) => {
     }
   };
 
-  //add更要补课
   const addFeedback = (newFeedBack) => {
     console.log(newFeedBack);
     // 这是用uuid这个包给newFeedback增加一个instance variable，即id
@@ -60,6 +60,7 @@ export const FeedbackProvider = ({ children }) => {
       value={{
         feedback,
         isLoading,
+        FeedbackEdit,
         addFeedback,
         editFeedback,
         setFeedback,

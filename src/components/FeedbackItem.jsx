@@ -32,7 +32,7 @@ function FeedbackItem({ item }) {
         }}
         className="edit"
       >
-        <FaEdit color="puple" />
+        <FaEdit color="purple" />
       </button>
       <div className="text-display">{item.text}</div>
       {/* <button onClick={handleClick}>Click</button> */}
