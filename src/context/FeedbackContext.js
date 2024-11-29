@@ -24,9 +24,7 @@ export const FeedbackProvider = ({ children }) => {
   }, []);
 
   const fetchFeedback = async () => {
-    const response = await fetch(
-      `http://localhost:5050/feedback?_sort=id&_order=desc`
-    );
+    const response = await fetch(`/feedback?_sort=id&_order=desc`);
     const data = await response.json();
 
     console.log(data);
@@ -61,7 +59,7 @@ export const FeedbackProvider = ({ children }) => {
   const addFeedback = async (newFeedback) => {
     // send to backend
     // no need for localhost because proxy is set
-    const response = await fetch(`http://localhost:5050/feedback`, {
+    const response = await fetch("/feedback", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
