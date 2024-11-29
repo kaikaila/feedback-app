@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
-import { v4 as uuvidv4 } from "uuid";
+// 因为backend会自动给分配unique id，所以这个uuid用不着了
+// import { v4 as uuvidv4 } from "uuid";
 const FeedbackContext = createContext();
 
 export const FeedbackProvider = ({ children }) => {
@@ -24,7 +25,7 @@ export const FeedbackProvider = ({ children }) => {
 
   const fetchFeedback = async () => {
     const response = await fetch(
-      "http://localhost:5050/feedback?_sort=id&_order=desc"
+      `http://localhost:5050/feedback?_sort=id&_order=desc`
     );
     const data = await response.json();
 
@@ -57,12 +58,29 @@ export const FeedbackProvider = ({ children }) => {
     //目前存在一个问题，一旦开始编辑一个feedback之后，就一直在编辑它，不能添加新的item
   };
 
-  const addFeedback = (newFeedBack) => {
-    console.log(newFeedBack);
+  const addFeedback = async (newFeedback) => {
+    // send to backend
+    // no need for localhost because proxy is set
+    const response = await fetch(`http://localhost:5050/feedback`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(newFeedback),
+    });
+    if (!response.ok) {
+      console.error(
+        `HTTP error! status: ${response.status} - ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    // 以下是使得UI显示了增加feedback
     // 这是用uuid这个包给newFeedback增加一个instance variable，即id
-    newFeedBack.id = uuvidv4();
+    // newFeedBack.id = uuvidv4();
     // 因为Feedback本身是immutable，所以只能复制一遍然后加上新加的
-    setFeedback([newFeedBack, ...feedback]);
+
+    setFeedback([data, ...feedback]);
   };
 
   return (
