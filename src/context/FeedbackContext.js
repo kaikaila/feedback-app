@@ -42,9 +42,11 @@ export const FeedbackProvider = ({ children }) => {
     FeedbackEdit.edit = false;
   };
   // delete feedback
-  const deleteFeedback = (id) => {
+  const deleteFeedback = async (id) => {
     if (window.confirm("Are you sure you want to delete?")) {
       // .filter 是一个high order function
+      // ${}意思是在一个模板字符串中加入表达式``
+      await fetch(`/feedback/${id}`, { method: "DELETE" });
       setFeedback(feedback.filter((item) => item.id !== id));
     }
   };
