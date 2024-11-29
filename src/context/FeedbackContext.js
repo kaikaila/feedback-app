@@ -39,12 +39,22 @@ export const FeedbackProvider = ({ children }) => {
       edit: true,
     });
   };
+  const closeEditFeedback = (FeedbackEdit) => {
+    FeedbackEdit.edit = false;
+  };
   // delete feedback
   const deleteFeedback = (id) => {
     if (window.confirm("Are you sure you want to delete?")) {
       // .filter 是一个high order function
       setFeedback(feedback.filter((item) => item.id !== id));
     }
+  };
+
+  const updateFeedback = (id, updItem) => {
+    setFeedback(
+      feedback.map((item) => (item.id === id ? { ...item, ...updItem } : item))
+    );
+    //目前存在一个问题，一旦开始编辑一个feedback之后，就一直在编辑它，不能添加新的item
   };
 
   const addFeedback = (newFeedBack) => {
@@ -63,6 +73,8 @@ export const FeedbackProvider = ({ children }) => {
         FeedbackEdit,
         addFeedback,
         editFeedback,
+        closeEditFeedback,
+        updateFeedback,
         setFeedback,
         deleteFeedback,
       }}

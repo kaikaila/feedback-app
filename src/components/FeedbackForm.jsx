@@ -6,7 +6,9 @@ import RatingSelect from "./RatingSelect";
 import FeedbackContext from "../context/FeedbackContext";
 
 function FeedbackForm() {
-  const { addFeedback, FeedbackEdit } = useContext(FeedbackContext);
+  // FeedbackEdit is an object
+  const { addFeedback, FeedbackEdit, closeEditFeedback, updateFeedback } =
+    useContext(FeedbackContext);
   // 如果[] 里面填了东西，[]里的东西一变，useEffect就会跑
   // 如果[]里面是空的，那么useEffect只在加载时跑一次
   useEffect(() => {
@@ -44,7 +46,12 @@ function FeedbackForm() {
       const newFeedback = { text, rating };
       console.log("handleSubmit is working");
       console.log("newFeedback");
-      addFeedback(newFeedback);
+      if (FeedbackEdit.edit === true) {
+        updateFeedback(FeedbackEdit.item.id, newFeedback);
+        closeEditFeedback(FeedbackEdit);
+      } else {
+        addFeedback(newFeedback);
+      }
       setText("");
     }
   };
