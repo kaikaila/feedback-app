@@ -51,11 +51,23 @@ export const FeedbackProvider = ({ children }) => {
     }
   };
 
-  const updateFeedback = (id, updItem) => {
+  const updateFeedback = async (id, updItem) => {
+    const response = await fetch(`/feedback/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(updItem),
+    });
+
+    const data = await response.json();
+
     setFeedback(
-      feedback.map((item) => (item.id === id ? { ...item, ...updItem } : item))
+      //下文中{ ...item, ...updItem }的意思是合并这两项，如果有重复的属性，后者覆盖前者
+      feedback.map((item) => (item.id === id ? { ...item, ...data } : item))
     );
     //目前存在一个问题，一旦开始编辑一个feedback之后，就一直在编辑它，不能添加新的item
+    // 该问题已修正，只需要在完成updateFeedback调用后将FeedbackEdit.edit更正为false即可
   };
 
   const addFeedback = async (newFeedback) => {
@@ -68,11 +80,6 @@ export const FeedbackProvider = ({ children }) => {
       },
       body: JSON.stringify(newFeedback),
     });
-    if (!response.ok) {
-      console.error(
-        `HTTP error! status: ${response.status} - ${response.statusText}`
-      );
-    }
 
     const data = await response.json();
     // 以下是使得UI显示了增加feedback
